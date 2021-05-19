@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
 import {createDrawerNavigator} from '@react-navigation/drawer' */
 import HomeScreen from '../screens/Home/HomeScreen';
+import SpendingBookScreen from '../screens/SpendingBook/SpendingBookScreen';
 import CategoriesScreen from '../screens/Categories/CategoriesScreen';
 import RecipeScreen from '../screens/Recipe/RecipeScreen';
 import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
@@ -13,6 +14,13 @@ import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
+
+// login
+import StartScreen from '../screens/Start/StartScreen';
+import LoginScreen from '../screens/Login/LoginScreen';
+import ResetPasswordScreen from '../screens/ResetPassword/ResetPasswordScreen';
+import RegisterScreen from '../screens/Register/RegisterScreen';
+import Dashboard from '../screens/Dashboard';
 
 /* const Stack = createStackNavigator();
 
@@ -41,7 +49,39 @@ function MainNavigator() {
 
 const MainNavigator = createStackNavigator(
   {
+  StartScreen: {
+    screen: StartScreen, 
+    navigationOptions: {
+      header: null,
+    },
+  },
+  LoginScreen: {
+    screen: LoginScreen, 
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ResetPasswordScreen: {
+    screen: ResetPasswordScreen, 
+    navigationOptions: {
+      header: null,
+    },
+  },
+  RegisterScreen: {
+    screen: RegisterScreen, 
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Dashboard: {
+    screen: Dashboard, 
+    navigationOptions: {
+      header: null,
+    },
+  },
+    // Dashboard: Dashboard,
     Home: HomeScreen,
+    Spending: SpendingBookScreen,
     Categories: CategoriesScreen,
     Recipe: RecipeScreen,
     RecipesList: RecipesListScreen,

@@ -15,7 +15,6 @@ import {
   getRecipesByCategoryName,
   getRecipesByIngredientName
 } from '../../data/MockDataAPI';
-
 export default class SearchScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
@@ -66,6 +65,10 @@ export default class SearchScreen extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
+    const text = navigation.getParam('item');
+    const { params = {} } = navigation.state;
+    // params.handleSearch(text)
+    
     navigation.setParams({
       handleSearch: this.handleSearch,
       data: this.getValue
@@ -110,8 +113,13 @@ export default class SearchScreen extends React.Component {
   );
 
   render() {
+    // const { activeSlide } = this.state;
+    const { navigation } = this.props;
+    const text = navigation.getParam('item');
+    
     return (
       <View>
+        <Text>{text}</Text>
         <FlatList
           vertical
           showsVerticalScrollIndicator={false}

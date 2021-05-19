@@ -12,7 +12,7 @@ import { getNumberOfRecipes } from '../../data/MockDataAPI';
 
 export default class CategoriesScreen extends React.Component {
   static navigationOptions = {
-    title: 'Categories'
+    title: 'Sách nấu ăn'
   };
 
   constructor(props) {

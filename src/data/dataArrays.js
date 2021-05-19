@@ -1,33 +1,79 @@
 export const categories = [
   {
     id: 3,
-    name: 'Cookies',
+    name: 'Làm bánh',
     photo_url:
     'https://www.telegraph.co.uk/content/dam/Travel/2019/January/france-food.jpg?imwidth=1400'
   },
   {
     id: 1,
-    name: 'Mexican Food',
+    name: 'Nấu đồ chay',
     photo_url: 'https://ak1.picdn.net/shutterstock/videos/19498861/thumb/1.jpg'
   },
   {
     id: 2,
-    name: 'Italian Food',
+    name: 'Món nhậu',
     photo_url:
       'https://images.unsplash.com/photo-1533777324565-a040eb52facd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'
   },
   {
     id: 4,
-    name: 'Smoothies',
+    name: 'Sinh tố',
     photo_url:
     'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/still-life-of-three-fresh-smoothies-in-front-of-royalty-free-image-561093647-1544042068.jpg?crop=0.715xw:0.534xh;0.0945xw,0.451xh&resize=768:*'
   },
   {
     id: 0,
-    name: 'Pizza',
+    name: 'Món ăn dặm cho bé',
     photo_url: 'https://amp.businessinsider.com/images/5c084bf7bde70f4ea53f0436-750-563.jpg'
   },
 ];
+
+export const spending = [
+  {
+    id: 0,
+    name: 'Mua quần',
+    date:  ['6', '07', '08 2021'],
+    price: '5.000.000',
+    category: 'Mua sắm'
+  },
+  {
+    id: 1,
+    name: 'Mua áo',
+    date:  ['6', '07', '08 2021'],
+    price: '5.000.000',
+    category: 'Mua sắm'
+  },
+  {
+    id: 2,
+    name: 'Mua xe máy',
+    date:  ['6', '07', '08 2021'],
+    price: '300.000',
+    category: 'Trang bị'
+  },
+  {
+    id: 3,
+    name: 'Sửa nhà',
+    date:  ['6', '07', '08 2021'],
+    price: '3.000.000',
+    category: 'Trang bị'
+  },
+  {
+    id: 4,
+    name: 'Học phí cho con',
+    date:  ['6', '07', '08 2021'],
+    price: '200.000',
+    category: 'Sinh hoạt'
+  },
+  {
+    id: 5,
+    name: 'Mua sách học tập cho con',
+    date:  ['6', '07', '08 2021'],
+    price: '59.000.000',
+    category: 'Sinh hoạt'
+  },
+];
+
 
 export const foods = [
   {
@@ -64,7 +110,7 @@ export const recipes = [
   {
     recipeId: 122,
     categoryId: 3,
-    title: 'Oatmeal Cookies',
+    title: 'Cookies hạnh nhân',
     photo_url: 'https://www.texanerin.com/content/uploads/2019/06/nobake-chocolate-cookies-1-650x975.jpg',
     photosArray: [
       'https://www.texanerin.com/content/uploads/2019/06/nobake-chocolate-cookies-1-650x975.jpg',
@@ -81,7 +127,7 @@ export const recipes = [
   {
     recipeId: 3,
     categoryId: 4,
-    title: 'Triple Berry Smoothie',
+    title: 'Sinh tố Dâu',
     photo_url:
       'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-how-to-make-a-smoothie-horizontal-1542310071.png?crop=0.803xw:0.923xh;0.116xw,0.00510xh&resize=768:*',
     photosArray: [
@@ -101,7 +147,7 @@ export const recipes = [
   {
     recipeId: 2,
     categoryId: 3,
-    title: 'Vegan Cookies',
+    title: 'Cookies Socola',
     photo_url: 'https://www.texanerin.com/content/uploads/2018/06/no-bake-lactation-cookies-1-650x975.jpg',
     photosArray: [
       'https://www.texanerin.com/content/uploads/2018/06/no-bake-lactation-cookies-1-650x975.jpg',
@@ -128,7 +174,7 @@ export const recipes = [
   {
     recipeId: 3,
     categoryId: 3,
-    title: 'Pumpkin Spice Cookies',
+    title: 'Bánh quy nướng',
     photo_url:
       'https://www.texanerin.com/content/uploads/2018/11/pumpkin-spice-cookies-4-650x975.jpg',
     photosArray: [
@@ -159,7 +205,7 @@ export const recipes = [
   {
     recipeId: 1,
     categoryId: 3,
-    title: 'Brownies',
+    title: 'Bánh trứng',
     photo_url: 'https://www.texanerin.com/content/uploads/2018/01/coconut-flour-brownies-1-650x975.jpg',
     photosArray: [
       'https://www.texanerin.com/content/uploads/2018/01/coconut-flour-brownies-1-650x975.jpg',
@@ -192,7 +238,7 @@ export const recipes = [
   {
     recipeId: 4,
     categoryId: 1,
-    title: 'Perfect Fish Tacos',
+    title: 'Bánh taco Ý',
     photo_url: 'https://hips.hearstapps.com/hmg-prod/images/190307-fish-tacos-112-1553283299.jpg',
     photosArray: [
       'http://d2814mmsvlryp1.cloudfront.net/wp-content/uploads/2014/04/WGC-Fish-Tacos-copy-2.jpg',
@@ -219,7 +265,7 @@ export const recipes = [
   {
     recipeId: 5,
     categoryId: 1,
-    title: 'Chicken Fajitas',
+    title: 'Gà xào ớt chuông',
     photo_url:
       'https://tmbidigitalassetsazure.blob.core.windows.net/secure/RMS/attachments/37/1200x1200/Flavorful-Chicken-Fajitas_EXPS_GHBZ18_12540_B08_15_8b.jpg',
     photosArray: [
@@ -250,7 +296,7 @@ export const recipes = [
   {
     recipeId: 6,
     categoryId: 2,
-    title: 'Buffalo Pizza',
+    title: ' Pizza thịt bò',
     photo_url:
       'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
     photosArray: [
@@ -281,7 +327,7 @@ export const recipes = [
   {
     recipeId: 0,
     categoryId: 0,
-    title: 'Classic Lasagna',
+    title: 'Chè thái',
     photo_url: 'https://namelymarly.com/wp-content/uploads/2018/04/20180415_Beet_Lasagna_10.jpg',
     photosArray: [
       "https://namelymarly.com/wp-content/uploads/2018/04/20180415_Beet_Lasagna_10.jpg",
@@ -352,6 +398,33 @@ export const recipes = [
       '-- Cook noodles according to package directions; drain. Meanwhile, in a Dutch oven, cook sausage, beef and onion over medium heat 8-10 minutes or until meat is no longer pink, breaking up meat into crumbles. Add garlic; cook 1 minute. Drain. Stir in tomatoes, tomato paste, water, sugar, 3 tablespoons parsley, basil, fennel, 1/2 teaspoon salt and pepper; bring to a boil. Reduce heat; simmer, uncovered, 30 minutes, stirring occasionally. In a small bowl, mix egg, ricotta cheese, and remaining parsley and salt. Preheat oven to 375°. Spread 2 cups meat sauce into an ungreased 13x9-in. baking dish. Layer with 3 noodles and a third of the ricotta mixture. Sprinkle with 1 cup mozzarella cheese and 2 tablespoons Parmesan cheese.\n\n -- Repeat layers twice. Top with remaining meat sauce and cheeses (dish will be full). Bake, covered, 25 minutes. Bake, uncovered, 25 minutes longer or until bubbly. Let stand 15 minutes before serving.'
   }
 ];
+
+export const quickSearch = [
+  {
+    quickSearchId: 0,
+    name: 'a'
+  },
+  {
+    quickSearchId: 0,
+    name: 'Oil'
+  },
+  {
+    quickSearchId: 0,
+    name: 'Toi la thinh'
+  },
+  {
+    quickSearchId: 0,
+    name: 'xin chao'
+  },
+  {
+    quickSearchId: 0,
+    name: 'day la gi'
+  },
+  {
+    quickSearchId: 0,
+    name: 'la tim kiem nhanh'
+  },
+]
 
 export const ingredients = [
   {

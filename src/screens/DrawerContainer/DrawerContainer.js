@@ -14,12 +14,12 @@ export default class DrawerContainer extends React.Component {
               style={styles.userLogo}
               source={require('../../../assets/icons/userlg.jpg')}
             />
-            <Text style={styles.text}>Hoàn Thịnh</Text>
+            <Text style={styles.text}>KIỀU THU TRANG</Text>
           </ImageBackground>
         </View>
         <View style={styles.container}>
           <MenuButton
-            title="HOME"
+            title="TRANG CHỦ"
             source={require('../../../assets/icons/home.png')}
             onPress={() => {
               navigation.navigate('Home');
@@ -27,33 +27,24 @@ export default class DrawerContainer extends React.Component {
             }}
           />
           <MenuButton
-            title="CATEGORIES"
+            title="QUẢN LÝ THU CHI"
+            source={require('../../../assets/icons/Money.png')}
+            onPress={() => {
+              navigation.navigate('Spending');
+              navigation.closeDrawer();
+            }}
+          />
+          <MenuButton
+            title="SÁCH NẤU ĂN"
             source={require('../../../assets/icons/category.png')}
             onPress={() => {
               navigation.navigate('Categories');
               navigation.closeDrawer();
             }}
           />
-          <MenuButton
-            title="SEARCH"
-            source={require('../../../assets/icons/search.png')}
-            onPress={() => {
-              navigation.navigate('Search');
-              navigation.closeDrawer();
-            }}
-          />
-
           {/* custom */}
           <MenuButton
-            title="SÁCH NẤU ĂN"
-            source={require('../../../assets/icons/open-book.png')}
-            onPress={() => {
-              navigation.navigate('cook');
-              navigation.closeDrawer();
-            }}
-          />
-          <MenuButton
-            title="CHĂN SÓC SỨC KHỎE"
+            title="SỨC KHỎE"
             source={require('../../../assets/icons/heart.png')}
             onPress={() => {
               navigation.navigate('heat');
@@ -68,7 +59,14 @@ export default class DrawerContainer extends React.Component {
               navigation.closeDrawer();
             }}
           />
-
+          <MenuButton
+            title="ĐĂNG XUẤT"
+            source={require('../../../assets/icons/logout.png')}
+            onPress={() => {
+              navigation.navigate('StartScreen');
+              navigation.closeDrawer();
+            }}
+          />
         </View>
       </View>
     );

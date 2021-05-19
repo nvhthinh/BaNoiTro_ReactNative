@@ -44,5 +44,24 @@ export const RecipeCard = StyleSheet.create({
   category: {
     marginTop: 5,
     marginBottom: 5
+  },
+  // custom
+  fastSearch: {
+    
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: RECIPE_ITEM_MARGIN,
+    marginRight: RECIPE_ITEM_MARGIN,
+    marginTop: 20,
+  },
+  fastSearchItem: {
+    margin: 2,
+    flexDirection:'row',flexWrap: 'wrap'
+  },
+  fastSearchItemBt: {
+    margin: 2,
+    flexWrap: 'wrap'
   }
 });
