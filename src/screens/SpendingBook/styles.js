@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'right',
-    color: '#333333',
     marginTop: 8,
     marginRight: 20
   },

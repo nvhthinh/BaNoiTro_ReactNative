@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
+import { TouchableOpacity, StyleSheet, View, Alert, AsyncStorage  } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../../components/Background'
 import Logo from '../../components/Logo'
@@ -7,42 +7,91 @@ import Header from '../../components/Header'
 import Button from '../../components/Button'
 import TextInput from '../../components/TextInput'
 import BackButton from '../../components/BackButton'
+import authentication from '../../routes/Authentication'
 import { theme } from '../../core/theme'
 import { emailValidator } from '../../helpers/emailValidator'
 import { passwordValidator } from '../../helpers/passwordValidator'
 import AppContainer from './../../navigations/AppNavigation';
+import { State } from 'react-native-gesture-handler'
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
-
+  const [email, setEmail] = useState({ value: 'acc1@g.com', error: '' })
+  const [password, setPassword] = useState({ value: '12345', error: '' })
+  const [messageErrorLogin, setMessageErrorLogin] = useState(0)
+  
   const onLoginPressed = () => {
-    // const emailError = emailValidator(email.value)
-    // const passwordError = passwordValidator(password.value)
-    const emailError = emailValidator("thinh@gmail.com")
-    const passwordError = passwordValidator("A1243546")
+    const emailError = emailValidator(email.value)
+    const passwordError = passwordValidator(password.value)
     if (emailError || passwordError) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
       return
     }
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'Home' }],
-    // })
-    navigation.navigate('Home');
+    signin();
   }
+
+  const signin = async() => {
+    try {
+      // IP address my computer
+      await fetch('http://192.168.1.9:3000/api/login',{
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'email': email.value,
+          'pass': password.value
+        })
+      }).then((response)=>response.json())
+      .then((res)=>{
+        if(res.status===1){
+          console.log("res ", res)
+          var { id, email, role, dpname, image } = res.body;
+          
+          authentication.saveItem('emailLG',email);
+          authentication.saveItem('idLG',id+"");
+          authentication.saveItem('roleLG',role+"");
+          authentication.saveItem('dpnameLG',dpname);
+          authentication.saveItem('imageLG',image);
+          
+          navigation.navigate('Home');
+        } else{
+          setMessageErrorLogin(1)
+          console.log ("log info no login  ", res)
+          // Alert.alert("Invalid Credentials");
+        }
+      })
+      .done();
+
+    } catch (error) {
+      console.log("Login client fail ", error);
+    }
+    
+  }
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('emailLogin');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
 
   return (
     <Background>
       <BackButton goBack={_ => navigation.navigate("StartScreen")} />
       <Logo />
-      <Header>Welcome back.</Header>
+      <Header>Welcome back{State.email}</Header>
       <TextInput
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChangeText={(text) => { setEmail({ value: text, error: '' }); setMessageErrorLogin(0); } }
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -54,16 +103,17 @@ export default function LoginScreen({ navigation }) {
         label="Password"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
+        onChangeText={(text) => { setPassword({ value: text, error: '' }); setMessageErrorLogin(0); } }
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
       />
       <View style={styles.forgotPassword}>
+        <Text style={{color: "red", paddingBottom: 20, paddingTop: 5, display: messageErrorLogin!=1?"none":"flex" }}>Email không tồn tại hoặc mật khẩu chưa đúng. Vui lòng nhập lại!</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('ResetPasswordScreen')}
         >
-          <Text style={styles.forgot}>Forgot your password?</Text>
+          <Text style={styles.forgot} >Forgot your password?</Text>
         </TouchableOpacity>
       </View>
       <Button mode="contained" onPress={onLoginPressed}>

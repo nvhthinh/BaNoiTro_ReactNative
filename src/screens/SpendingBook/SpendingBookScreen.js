@@ -6,25 +6,25 @@ import SpendingSummary from './SpendingSummary';
 
 const FirstRoute = () => (
     <ScrollView>
-        <SpendingHistory/>
-        {/* <SpendingSummary/> */}
+        {/* <SpendingHistory/> */}
+        <SpendingSummary/>
     </ScrollView>
 );
 
 const SecondRoute = () => (
     <ScrollView>
-        <SpendingSummary/>
-        {/* <SpendingHistory/> */}
+        {/* <SpendingSummary/> */}
+        <SpendingHistory/>
     </ScrollView>
 );
-navigationOptions = {
-    title: 'Danh mục'
-  };
-export default function TabViewExample() {
+// navigationOptions = {
+//     title: 'Danh mục'
+//   };
+export default function TabViewSpendingBook() {
     
-    TabViewExample.navigationOptions  = {
-        title: 'Danh mục'
-      };
+  TabViewSpendingBook.navigationOptions  = {
+    title: 'Quản lý thu chi'
+  };
 
   const layout = useWindowDimensions();
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, ScrollView, Text, View, TouchableHighlight, Image, Button } from 'react-native';
+import { FlatList, ScrollView, Text, View, TouchableHighlight, Image, Button, AsyncStorage } from 'react-native';
 import styles from './styles';
 import { SearchBar } from 'react-native-elements';
 import { recipes, quickSearch } from '../../data/dataArrays';
@@ -11,14 +11,13 @@ import DrawerActions from 'react-navigation';
 import { getCategoryName } from '../../data/MockDataAPI';
 // import Button from '@material-ui/core/Button';
 export default class HomeScreen extends React.Component {
-  // static navigationOptions = ({ navigation }) => ({
-  //   title: 'Home',
-  //   headerLeft: () => <MenuImage
-  //     onPress={() => {
-  //       navigation.openDrawer();
-  //     }}
-  //   />
-  // });
+  
+  componentDidMount() {
+    // console.log("In username ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    // AsyncStorage.getItem('username', (err, result) => {
+    //   console.log(result); 
+    // });
+  }
 
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;

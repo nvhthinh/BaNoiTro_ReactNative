@@ -1,3 +1,125 @@
+export const summarySpending = [
+  {
+    name: 'Mua sắm',
+    percent: 5111444.122,
+    color: '#ff9900',
+  },
+  {
+      name: 'Trang bị',
+      percent: 2800000,
+      color: '#109618',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+  },
+  {
+      name: 'Sinh hoạt',
+      percent: 8538000,
+      color: '#990099',
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+  },
+  // {
+  //     name: 'Đầu tư',
+  //     population: 11920000,
+  //     color: '#0099c6',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: 'Lương',
+  //     population: 11920000,
+  //     color: '#dd4477',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: 'Thu nhập khác',
+  //     population: 11920000,
+  //     color: '#6a0',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: '1',
+  //     population: 11920000,
+  //     color: '#b82e2e',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: '2',
+  //     population: 11920000,
+  //     color: '#316395',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: '3',
+  //     population: 11920000,
+  //     color: '#994499',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+  // {
+  //     name: '4',
+  //     population: 11920000,
+  //     color: '#2a9',
+  //     legendFontColor: '#7F7F7F',
+  //     legendFontSize: 15,
+  // },
+];
+
+export const spending = [
+  {
+    id: 0,
+    name: 'Mua quần',
+    date:  ['6', '14', '08', '2025'],
+    price: '5.000.000',
+    category: 'Mua sắm',
+    pay: 0
+  },
+  {
+    id: 1,
+    name: 'Mua áo',
+    date:  ['6', '07', '08', '2021'],
+    price: '5.000.000',
+    category: 'Mua sắm',
+    pay: 0
+  },
+  {
+    id: 2,
+    name: 'Mua xe máy',
+    date:  ['6', '07', '08', '2021'],
+    price: '300.000',
+    category: 'Trang bị',
+    pay: 0
+  },
+  {
+    id: 3,
+    name: 'Sửa nhà',
+    date:  ['6', '07', '08', '2021'],
+    price: '3.000.000',
+    category: 'Trang bị',
+    pay: 1
+  },
+  {
+    id: 4,
+    name: 'Học phí cho con',
+    date:  ['6', '07', '08', '2021'],
+    price: '200.000',
+    category: 'Sinh hoạt',
+    pay: 1
+  },
+  {
+    id: 5,
+    name: 'Mua sách học tập cho con',
+    date:  ['6', '07', '08', '2021'],
+    price: '59.000.000',
+    category: 'Sinh hoạt',
+    pay: 0
+  },
+];
+
 export const categories = [
   {
     id: 3,
@@ -28,52 +150,6 @@ export const categories = [
     photo_url: 'https://amp.businessinsider.com/images/5c084bf7bde70f4ea53f0436-750-563.jpg'
   },
 ];
-
-export const spending = [
-  {
-    id: 0,
-    name: 'Mua quần',
-    date:  ['6', '07', '08 2021'],
-    price: '5.000.000',
-    category: 'Mua sắm'
-  },
-  {
-    id: 1,
-    name: 'Mua áo',
-    date:  ['6', '07', '08 2021'],
-    price: '5.000.000',
-    category: 'Mua sắm'
-  },
-  {
-    id: 2,
-    name: 'Mua xe máy',
-    date:  ['6', '07', '08 2021'],
-    price: '300.000',
-    category: 'Trang bị'
-  },
-  {
-    id: 3,
-    name: 'Sửa nhà',
-    date:  ['6', '07', '08 2021'],
-    price: '3.000.000',
-    category: 'Trang bị'
-  },
-  {
-    id: 4,
-    name: 'Học phí cho con',
-    date:  ['6', '07', '08 2021'],
-    price: '200.000',
-    category: 'Sinh hoạt'
-  },
-  {
-    id: 5,
-    name: 'Mua sách học tập cho con',
-    date:  ['6', '07', '08 2021'],
-    price: '59.000.000',
-    category: 'Sinh hoạt'
-  },
-];
-
 
 export const foods = [
   {

@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
     left: 20,
+    textTransform: 'uppercase'
   },
   
 });

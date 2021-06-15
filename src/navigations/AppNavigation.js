@@ -1,6 +1,6 @@
 import { createAppContainer } from 'react-navigation';
-import {createDrawerNavigator} from 'react-navigation-drawer'
-import {createStackNavigator} from 'react-navigation-stack'
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import {createStackNavigator} from 'react-navigation-stack';
 /* import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
@@ -8,6 +8,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer' */
 import HomeScreen from '../screens/Home/HomeScreen';
 import SpendingBookScreen from '../screens/SpendingBook/SpendingBookScreen';
 import CategoriesScreen from '../screens/Categories/CategoriesScreen';
+import HealthScreen from '../screens/health/HealthScreen';
 import RecipeScreen from '../screens/Recipe/RecipeScreen';
 import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
@@ -83,6 +84,7 @@ const MainNavigator = createStackNavigator(
     Home: HomeScreen,
     Spending: SpendingBookScreen,
     Categories: CategoriesScreen,
+    health: HealthScreen,
     Recipe: RecipeScreen,
     RecipesList: RecipesListScreen,
     Ingredient: IngredientScreen,

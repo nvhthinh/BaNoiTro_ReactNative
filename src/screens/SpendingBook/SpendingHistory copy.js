@@ -14,15 +14,21 @@ export default class SpendingHistory extends React.Component {
       choosenIndex: 0,
       datePickerVisible: false,
       date: "",
+      price: "0,000",
       checked: "first",
+      ItemSP: "",
       idLG: "",
       spendingSV: null,
-      ItemSP: "",
-      objSpending: {},
-      refreshing: true,
-      priceInt: 0,
-      mess: "",
+      
+      objSpending: {}
     };
+    
+    // constructor(props) {
+    //   super(props);
+    //   this.state = ({
+    //     spendingSV: []
+    //   })
+    // }
 
     componentDidMount() {
       this.getDate();
@@ -31,8 +37,45 @@ export default class SpendingHistory extends React.Component {
         this.setState({ idLG: idLG !== null, idLG: idLG })
       });
       this._refreshDataSpending(this.state.idLG);
+
+      this._addSpending();
     }
     
+    componentWillMount() {
+      AsyncStorage.getItem('idLG').then((idLG) => {
+        this.setState({ idLG: idLG !== null, idLG: idLG })
+      });
+    }
+    // add data 
+    _addSpending = async() => {
+      try {
+        
+        
+        // await fetch('http://192.168.1.9:3000/api/getALLSpending',{
+        //   method: 'POST',
+        //   headers: {
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     'id': idLG,
+        //   })
+        // }).then((response)=>response.json())
+        // .then((res)=>{
+        //   if(res.status===1){
+        //     let data = res.body.data;
+        //     this.setState({spendingSV: data})
+        //   } else{
+        //     console.log ("log info get all spending error  ", res)
+        //   }
+        // })
+        // .done();
+  
+      } catch (error) {
+        console.log("Login client fail ", error);
+      }
+    }
+
     updateObject = (key, value) => {
       console.log("value is ", key + " "+ value)
       const objSpending = this.state.ItemSP;
@@ -41,141 +84,18 @@ export default class SpendingHistory extends React.Component {
       console.log("./objSpending update...............................", this.state.ItemSP)
     }
 
-    //create data spending
-    _newSpending = async() => {
-      this.setState({
-        visibleModal: 1,
-        ItemSP: {
-          category: "Chưa xếp loại",
-          datec: new Date(),
-          dateu: "",
-          day: "",
-          dd: "",
-          mm: "",
-          name: "",
-          pay: false,
-          price: 0.000,
-          yyyy: "",
-          idUser: await AsyncStorage.getItem('idLG')
-        },
-        priceInt: 0,
-      })
-      console.log("in data: ", this.state.ItemSP );
-      
-      // this.getDate();
+    coppyObject = (item) => {
+      let objectTam = item;
+      this.setState({ItemSP: objectTam});
     }
-    // add spending
-    _addSpending = async() => {
-      try {
-        const data = await this.state.ItemSP;
-        await fetch('http://192.168.1.9:3000/api/addSpending',{
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            'data': data,
-            'priceInt': this.state.priceInt
-          })
-        }).then((response)=>response.json())
-        .then((res)=>{
-          if(res.status===1){
-            this._handleRefreshing();
-          } else{
-            console.log ("log info add spending error  ", res)
-          }
-        })
-        .done();
-      } catch (error) {
-        this.setState({refreshing: false});
-        console.log("Login client fail ", error);
-      }
-    }
-
-    // update spending
-    _updateSpending = async() => {
-      try {
-        const data = await this.state.ItemSP;
-        console.log("./LG...............................", data.id + "/"+ data.name)
-        await fetch('http://192.168.1.9:3000/api/updateSpending',{
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            'data': data,
-            'priceInt': this.state.priceInt
-          })
-        }).then((response)=>response.json())
-        .then((res)=>{
-          if(res.status===1){
-            this._handleRefreshing();
-          } else{
-            console.log ("log info update spending error  ", res)
-          }
-        })
-        .done();
-      } catch (error) {
-        this.setState({refreshing: false});
-        console.log("Login client fail ", error);
-      }
-    }
-
-    //điều hướng thêm / cập nhật spending
-    _handleRedirectAdd_Update = async() => {
-      if(this.state.ItemSP.name == "") {
-        this.setState({mess: "1"})
-      } else {
-        if(this.state.ItemSP.price == 0) {
-          this.setState({mess: "2"})
-        } else {
-
-          let id = await this.state.ItemSP.id;
-          if(id != null) {
-            console.log("update");
-            this._updateSpending();
-          } else {
-            console.log("add");
-            this._addSpending();
-          }
-
-        }
-      }
-    }
-
-    //delete spending
-    _delSpending = async() => {
-      try {
-        const id = await this.state.ItemSP.id;
-        await fetch('http://192.168.1.9:3000/api/delSpending',{
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            'id': id
-          })
-        }).then((response)=>response.json())
-        .then((res)=>{
-          if(res.status===1){
-            this._handleRefreshing();
-          } else{
-            console.log ("log info update spending error  ", res)
-          }
-        })
-        .done();
-      } catch (error) {
-        this.setState({refreshing: false});
-        console.log("Login client fail ", error);
-      }
-    }
-
     //reder data
     _refreshDataSpending = () => {
-      this._renderDataSpending();
+      this._renderDataSpending().then((spendings) => {
+        this.setState({ spendingSV : spendings });
+      }).catch((err) => {
+        console.error("error get API spending server", err);
+        this.setState({ spendingSV : []})
+      })
     }
     _renderDataSpending = async() => {
       try {
@@ -192,7 +112,6 @@ export default class SpendingHistory extends React.Component {
           })
         }).then((response)=>response.json())
         .then((res)=>{
-          this.setState({refreshing: false});
           if(res.status===1){
             let data = res.body.data;
             this.setState({spendingSV: data})
@@ -201,21 +120,11 @@ export default class SpendingHistory extends React.Component {
           }
         })
         .done();
+  
       } catch (error) {
-        this.setState({refreshing: false});
         console.log("Login client fail ", error);
       }
     }
-
-    // refres data
-    _handleRefreshing = () => {
-      this.setState ({
-        visibleModal: null,
-        refreshing: true,
-        mess: ""
-      },
-      () => {this._renderDataSpending()}
-      )}
     
     getDate = () => {
       var date = new Date();
@@ -231,21 +140,15 @@ export default class SpendingHistory extends React.Component {
     };
     
     _handleConfirm = (date) => {
-      let dayth = this._getDay(date.getDay());
-      const formattedDate = dayth + " " + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+      console.log("=============================================> ", date)
+      const formattedDate = this._getDay(date.getDay()) + " " + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+      // console.warn("A date has been picked:Get thu ngày>>>>>>>>>>>", formattedDate);
       this.setState({date: formattedDate});
-      
-      this.updateObject("datec", date.getFullYear() +"-"+ (date.getMonth() + 1) +"-"+ date.getDate());
-      this.updateObject("day", ""+dayth);
-      this.updateObject("dd", ""+date.getDate());
-      this.updateObject("mm", ""+(date.getMonth() + 1));
-      this.updateObject("yyyy", ""+date.getFullYear());
-      
       this._hideDatePicker();
     };
 
-    // render thứ
     _getDay = (day) => {
+      // console.log(day, "_________________");
       switch(day) {
   
         case 0:
@@ -272,23 +175,23 @@ export default class SpendingHistory extends React.Component {
         default:
           Alert.alert("NUMBER NOT FOUND. day error Opps!");
       }
-    }
-
-    // tạo kiểu int sang tiền tệ
+    }    
     _convertMoney = (price) => {
-      let formattedPrice = Number(price).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&.');
-      this.updateObject("price", formattedPrice);
+      let formattedPrice = Number(price).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      // console.log ("______________>>>>>>>", formattedPrice);
+      this.setState({price: formattedPrice});
     }
-
-    //tạo kiểu tiền tệ sang int
     _convertNumber = (price) => {
-      let intMoney = price.replace(/\./g,'').slice(0, -3);
-      this.setState({priceInt: intMoney});
-      console.log("price int ", this.state.priceInt);
+      let intMoney = price.replace(/\./g,'');
     }
     
-    //form common, modal 
     _renderFormInOut = () => {
+      // if(this.state.ItemSP===""){
+      //   // console.log ("========================K");
+      // } else {
+      //   // console.log ("========================có");
+      //   this._convertNumber(this.state.ItemSP.price);
+      // }
       if ( this.state.ItemSP.pay === false) {
         return (
           <View>
@@ -306,7 +209,6 @@ export default class SpendingHistory extends React.Component {
                  onChangeText = {(value) => {this.updateObject("name", value)}}
                 />
               </View> 
-              <Text style = {{justifyContent: "center", paddingTop: 8, color: 'red', display: this.state.mess=="1"?"flex":"none"}}>Tên không được để trống!</Text>
             </View>
             <View style = {{padding: 10, flexDirection: "column"}}>
               <Text style={{}}>Loại khoản chi
@@ -319,22 +221,20 @@ export default class SpendingHistory extends React.Component {
                   selectedValue={this.state.ItemSP.category}
                   onValueChange={(value) => {this.updateObject("category", value)}}
                 >
-                  <Picker.Item label="Khoản chi khác" value="Khoản chi khác" />
-                  <Picker.Item label="Sinh hoạt" value="Sinh hoạt" />
-                  <Picker.Item label="Học tập" value="Học tập" />  
-                  <Picker.Item label="Y tế" value="Y tế" />
-                  <Picker.Item label="Giải trí" value="Giải trí" />
-                  <Picker.Item label="Mua sắm" value="Mua sắm" />
+                  <Picker.Item label="Đầu tư" value="Đầu tư" />
+                  <Picker.Item label="Mua sắm" value="Mua sắm" />  
+                  <Picker.Item label="Sinh hoạt" value="Sinh hoạt" />  
                 </Picker>
               </View> 
             </View>
+
             <View style = {{padding: 10, flexDirection: "column"}}>
-              <Text style={{}}>Ngày chi
+              <Text style={{}}>Ngày {this.state.ItemSP.pay===0?"chi": "thu"}
                 <Text style= {{color: "red"}}> *</Text>
               </Text>
               <View style={{borderColor: "#dadde1", borderWidth: 1, borderRadius: 5}}>
                     <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={this._showDatePicker}>
-                      <Text style = {{height: 40, padding: 10}}>{this.state.ItemSP.yyyy===""?this.state.date : this.state.ItemSP.day+" "+this.state.ItemSP.dd+"/"+this.state.ItemSP.mm+"/"+this.state.ItemSP.yyyy}</Text>
+                      <Text style = {{height: 40, padding: 10}}>{this.state.ItemSP===""?this.state.date : this.state.ItemSP.day+" "+this.state.ItemSP.dd+"/"+this.state.ItemSP.mm+"/"+this.state.ItemSP.yyyy}</Text>
                     </TouchableHighlight>
 
                   <DateTimePicker
@@ -348,7 +248,8 @@ export default class SpendingHistory extends React.Component {
             <View style = {{padding: 10, flexDirection: "column"}}>
               <Text style={{}}>Số tiền đã chi trả
                 <Text style= {{color: "red"}}> *</Text>
-                <Text style= {{color: this.state.ItemSP.pay === true ? "green": "red" , fontWeight: "bold"}}>{this.state.ItemSP===""?"":this.state.ItemSP.price} VND</Text>
+                <Text style= {{color: "green", fontWeight: "bold"}}>{this.state.ItemSP===""?"":this.state.ItemSP.price} VND</Text>
+                {/* <Text style= {{color: "green", fontWeight: "bold"}}>{this.state.price} VND</Text> */}
               </Text>
               <View style={{borderColor: "#dadde1", borderWidth: 1, borderRadius: 5}}>
                 <TextInput 
@@ -357,36 +258,28 @@ export default class SpendingHistory extends React.Component {
                 placeholder = "Nhập số tiền đã chi trả"
                 autoCapitalize = "none"
                 keyboardType="numeric"
-                defaultValue = {this.state.priceInt}
-                onChangeText={(price) => { this.setState({priceInt: price}); this._convertMoney(price) }}
+                // defaultValue ={this.state.ItemSP.price}
+                // defaultValue = {this._convertNumber(this.state.ItemSP.price)}
+                onChangeText={price => this._convertMoney(price)}
                 />
               </View> 
-              <Text style = {{justifyContent: "center", paddingTop: 8, color: 'red', display: this.state.mess=="2"?"flex":"none"}}>Số tiền không được để trống!</Text>
             </View>
-
+            
             <View style = {{padding: 10, flexDirection: "row", justifyContent: "flex-end"}}>
-              
-              <View style= {{paddingLeft: 20, display: this.state.ItemSP.id != null? "flex": "none"}}>
-                <Button
-                  onPress={() => {this.setState({ visibleModal: 2 })}}
-                  title= " Xóa khoản "
-                  color="#bd3737"
-                />
-              </View>
-
               <View style= {{paddingLeft: 20}}>
                 <Button
-                  onPress={() => {this._handleRedirectAdd_Update();}}
-                  title= " Lưu khoản "
+                  onPress={() => this.setState({ visibleModal: null })}
+                  title= " Lưu khoản chi "
                   color="#e7b62c"
+                  accessibilityLabel="Learn more about this purple button"
                 />
               </View>
-              
               <View style= {{paddingLeft: 20}}>
                 <Button
-                  onPress={() => {this._handleRefreshing()}}
+                  onPress={() => this.setState({ visibleModal: null })}
                   title= " Cancel "
                   color="#dadde1"
+                  accessibilityLabel="Learn more about this purple button"
                 />
               </View>
               
@@ -406,11 +299,9 @@ export default class SpendingHistory extends React.Component {
                 underlineColorAndroid = "transparent"
                 placeholder = "Nhập tên khoản thu"
                 autoCapitalize = "none"
-                value = {this.state.ItemSP.name}
-                 onChangeText = {(value) => {this.updateObject("name", value)}}
+                //  onChangeText = {this.handleEmail}
                 />
               </View> 
-              <Text style = {{justifyContent: "center", paddingTop: 8, color: 'red', display: this.state.mess=="1"?"flex":"none"}}>Tên không được để trống!</Text>
             </View>
             <View style = {{padding: 10, flexDirection: "column"}}>
               <Text style={{}}>Loại khoản thu
@@ -420,23 +311,23 @@ export default class SpendingHistory extends React.Component {
                 <Picker 
                   style={{height: 40 }}
                   itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily:"Ebrima", fontSize:17 }}
-                  selectedValue={this.state.ItemSP.category}
-                  onValueChange={(value) => {this.updateObject("category", value)}}
+                  selectedValue={this.state.language}
+                  onValueChange={(itemValue, itemPosition) =>
+                    this.setState({language: itemValue, choosenIndex: itemPosition})}  
                 >
-                  <Picker.Item label="Khoản thu khác" value="Khoản thu khác" />
-                  <Picker.Item label="Nhận lương" value="Nhận lương" />
-                  <Picker.Item label="Tiền thưởng" value="Tiền thưởng" />
-                  <Picker.Item label="Lãi ngân hàng" value="Lãi ngân hàng" />
+                  <Picker.Item label="Lương" value="Đầu tư" />  
+                  <Picker.Item label="Thu nhập khác" value="Mua sắm" />  
                 </Picker>
               </View> 
             </View>
+
             <View style = {{padding: 10, flexDirection: "column"}}>
-              <Text>Ngày thu
+              <Text style={{}}>Ngày thu
                 <Text style= {{color: "red"}}> *</Text>
               </Text>
               <View style={{borderColor: "#dadde1", borderWidth: 1, borderRadius: 5}}>
                     <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={this._showDatePicker}>
-                      <Text style = {{height: 40, padding: 10}}>{this.state.ItemSP.yyyy===""?this.state.date : this.state.ItemSP.day+" "+this.state.ItemSP.dd+"/"+this.state.ItemSP.mm+"/"+this.state.ItemSP.yyyy}</Text>
+                      <Text style = {{height: 40, padding: 10}}>{this.state.date}</Text>
                     </TouchableHighlight>
 
                   <DateTimePicker
@@ -450,7 +341,7 @@ export default class SpendingHistory extends React.Component {
             <View style = {{padding: 10, flexDirection: "column"}}>
               <Text style={{}}>Số tiền đã thu
                 <Text style= {{color: "red"}}> *</Text>
-                <Text style= {{color: "green", fontWeight: "bold"}}>{this.state.ItemSP===""?"":this.state.ItemSP.price} VND</Text>
+                <Text style= {{color: "green", fontWeight: "bold"}}> {this.state.price} VND</Text>
               </Text>
               <View style={{borderColor: "#dadde1", borderWidth: 1, borderRadius: 5}}>
                 <TextInput 
@@ -459,33 +350,27 @@ export default class SpendingHistory extends React.Component {
                 placeholder = "Nhập số tiền đã thu"
                 autoCapitalize = "none"
                 keyboardType="numeric"
-                defaultValue = {this.state.priceInt}
-                onChangeText={(price) => { this.setState({priceInt: price}); this._convertMoney(price) }}
+                onChangeText={price => this._convertMoney(price)}
                 />
               </View> 
-              <Text style = {{justifyContent: "center", paddingTop: 8, color: 'red', display: this.state.mess=="2"?"flex":"none"}}>Số tiền không được để trống!</Text>
             </View>
             
             <View style = {{padding: 10, flexDirection: "row", justifyContent: "flex-end"}}>
-              <View style= {{paddingLeft: 20, display: this.state.ItemSP.id != null? "flex": "none"}}>
-                <Button
-                  onPress={() => {this.setState({ visibleModal: 2 })}}
-                  title= " Xóa khoản "
-                  color="#bd3737"
-                />
-              </View>
               <View style= {{paddingLeft: 20}}>
                 <Button
-                  onPress={() => {this._handleRedirectAdd_Update();}}
-                  title= " Lưu khoản "
+                // style={styles.fastSearchItemBt}
+                  onPress={() => this.setState({ visibleModal: null })}
+                  title= " Lưu khoản thu "
                   color="#e7b62c"
+                  accessibilityLabel="Learn more about this purple button"
                 />
               </View>
               <View style= {{paddingLeft: 20}}>
                 <Button
-                  onPress={() => {this._handleRefreshing()}}
+                  onPress={() => this.setState({ visibleModal: null })}
                   title= " Cancel "
                   color="#dadde1"
+                  accessibilityLabel="Learn more about this purple button"
                 />
               </View>
               
@@ -494,42 +379,40 @@ export default class SpendingHistory extends React.Component {
         )
       }
     }
-
-    //modal xóa
-    _renderModaldel = () => (
+    _renderModalAdd = () => (
       <View style={{backgroundColor: "#fff", borderRadius: 5, color: "#000"}}>
         <View style= {{backgroundColor: "#fff3d0", borderTopStartRadius: 5, borderTopEndRadius: 5, padding: 10}}>
-          <Text style= {{fontSize: 20, textTransform: "capitalize", color: "#000", fontWeight: "600"}}>Xác nhận xóa khoản thu chi #{this.state.ItemSP.id} ?</Text>
+          <Text style= {{fontSize: 20, textTransform: "capitalize", color: "#000", fontWeight: "600"}}>Thêm khoản chi tiêu</Text>
         </View>
 
         <View style = {{padding: 10, flexDirection: "column"}}>
-          <Text style = {{justifyContent: "center", paddingTop: 8, color: 'red', fontSize: 18}}>Sau khi xóa thông tin này sẽ không được phục hồi lại.</Text>
+          <View style= {{flexDirection: "row"}}>
+            <RadioButton
+              value="first"
+              status={ this.state.checked === 'first' ? 'checked' : 'unchecked' }
+              // onPress={() => setChecked('first')}
+              onPress={() => {this.setState({ checked: "first" }); this.updateObject("pay", false)}}
+            />
+            <Text style = {{justifyContent: "center", paddingTop: 8, color: this.state.checked === 'first' ? 'green': '#000', fontWeight: "bold"}}>Nhập khoản chi</Text>
+          </View>
+          <View style= {{flexDirection: "row"}}>
+              <RadioButton
+                value="second"
+                status={ this.state.checked === 'second' ? 'checked' : 'unchecked' }
+                onPress={() => {this.setState({ checked: "second" }); this.updateObject("pay", true)}}
+              />
+            <Text style = {{justifyContent: "center", paddingTop: 8, color: this.state.checked === 'second' ? 'green': '#000', fontWeight: "bold"}}>Nhập khoản thu</Text>
+          </View>  
         </View>
 
-        <View style = {{padding: 10, flexDirection: "row", justifyContent: "flex-end"}}>
-              <View style= {{paddingLeft: 20, display: this.state.ItemSP.id != null? "flex": "none"}}>
-                <Button
-                  onPress={() => {this._delSpending()}}
-                  title= " Đồng ý xóa "
-                  color="#bd3737"
-                />
-              </View>
-              <View style= {{paddingLeft: 20}}>
-                <Button
-                  onPress={() => {this._handleRefreshing()}}
-                  title= " Cancel "
-                  color="#dadde1"
-                />
-              </View>
-            </View>
+        {/* render from */}
+        {this._renderFormInOut(this.state.checked)}
       </View>
     );
-
-    //modal sửa
     _renderModalEdit = () => (
       <View style={{backgroundColor: "#fff", borderRadius: 5, color: "#000"}}>
         <View style= {{backgroundColor: "#fff3d0", borderTopStartRadius: 5, borderTopEndRadius: 5, padding: 10}}>
-          <Text style= {{fontSize: 20, textTransform: "capitalize", color: "#000", fontWeight: "600"}}>{this.state.ItemSP.id != null? "Cập nhật khoản thu chi #"+this.state.ItemSP.id:"Thêm khoản thu chi"}</Text>
+          <Text style= {{fontSize: 20, textTransform: "capitalize", color: "#000", fontWeight: "600"}}>Cập nhật khoản chi tiêu #</Text>
         </View>
 
         <View style = {{padding: 10, flexDirection: "column"}}>
@@ -551,13 +434,11 @@ export default class SpendingHistory extends React.Component {
 
         {/* render from */}
         {this._renderFormInOut()}
-        
       </View>
     );
 
-    //in danh sách spending ra màn hình
     _renderSpending = ({ item }) => (
-      <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => {this.setState({ visibleModal: 1, ItemSP: item}); this._convertNumber(item.price)}}>
+      <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => {this.setState({ visibleModal: 2 }); this.coppyObject(item)}}>
         <View style={styles.spendingItemContainer}>
           <View style = {{flexDirection:'row', paddingTop: 10}}>
             <View>
@@ -579,13 +460,15 @@ export default class SpendingHistory extends React.Component {
       </TouchableHighlight>
     );
 
-    // hàm render chính
     render() {
         return (
           <View style={styles.spendingContainer}>
+              {/* //import */}
             <View style = {{width: "95%", margin: 10}}>
                 <Searchbar
                     placeholder="Search"
+                    // onChangeText={onChangeSearch}
+                    // value={searchQuery}
                 />
             </View>
             {/* //conten page */}
@@ -609,7 +492,7 @@ export default class SpendingHistory extends React.Component {
                 <View style={styles.spendingTotalContainer}>
                     <View style = {{flex: 1, flexDirection:'row',}}>
                         <Text style={styles.spendingTotalTxt}>20 giao dịch</Text>
-                        <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => this._newSpending()}>
+                        <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => this.setState({ visibleModal: 1, ItemSP: "", price: "0,000"})}>
                             <View style= {{backgroundColor: "#e7b62c", flex: 1, justifyContent: "center", paddingLeft: 10, paddingRight: 10, paddingBottom: 15, paddingTop: 10, borderRadius: 10, borderColor: "#E7E9EB", borderWidth: 1}}>
                                 <Text style = {{color: "#fff", fontWeight: "bold"}}><Image style={{height: 20, width: 20}} source={require("../../../assets/icons/add-icon.png")} /> Thêm chi tiêu</Text>
                             </View>
@@ -617,22 +500,21 @@ export default class SpendingHistory extends React.Component {
                     </View>
                 </View>
                 <FlatList
+                    // data={spending}
                     data= {this.state.spendingSV}
                     renderItem={this._renderSpending}
                     keyExtractor={item => `${item.id}`}
-                    refreshing={this.state.refreshing}
-                    onRefresh= {this._handleRefreshing}
                 />
             </View>
 
             {/* Modal edit*/}
-            <Modal isVisible={this.state.visibleModal === 1}>
+            <Modal isVisible={this.state.visibleModal === 2}>
                 {this._renderModalEdit()}
             </Modal>
 
-            {/* Modal del*/}
-            <Modal isVisible={this.state.visibleModal === 2}>
-                {this._renderModaldel()}
+            {/* Modal add*/}
+            <Modal isVisible={this.state.visibleModal === 1}>
+                {this._renderModalAdd()}
             </Modal>
 
           </View>

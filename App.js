@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import AppContainer from './src/navigations/AppNavigation';
 import LoginScreen from './src/screens/Login/LoginScreen';
 import Dashboard from './src/screens/Dashboard';
@@ -16,7 +16,36 @@ import { theme } from './src/core/theme'
 const Stack = createStackNavigator()
 
 export default function App() {
+  // const [email, setEmail] = useState({ value: '', error: '' })
+  // const [password, setPassword] = useState({ value: '', error: '' })
+  // const [message, setMessage] = useState('');
+  // const [isLoading, setIsLoading] = React.useState(true);
+  
+  // const signin = async() => {
+  //   if(email!="" && password!=""){
+  //     alert('thank your for sign in');
+  //   }
+
+  // }
+ 
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
+  // }, []);
+
+  // if( isLoading ) {
+  //   return (
+  //     <View style={{flex: 1,justifyContent: "center" }}>
+  //       <ActivityIndicator size="large" color="#e7b62c"/>
+  //     </View>
+  //   )
+  // }
+
   return (
+
+    
      <AppContainer/>
     
 

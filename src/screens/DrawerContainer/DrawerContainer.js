@@ -1,9 +1,35 @@
 import React from 'react';
-import { View, ImageBackground, Text, Image } from 'react-native';
+import { View, ImageBackground, Text, Image, AsyncStorage, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 import MenuButton from '../../components/MenuButton/MenuButton';
+import authentication from '../../routes/Authentication';
 export default class DrawerContainer extends React.Component {
+  state = {myState: '', dpnameLG: ""}
+  
+  componentDidMount() {
+    AsyncStorage.getItem('dpnameLG').then((dpnameLG) => {
+      this.setState({ dpnameLG: dpnameLG !== null, dpnameLG: dpnameLG })
+      console.log("Dil", this.state.dpnameLG);
+    });
+  }
+  
+  componentWillMount() {
+    AsyncStorage.getItem('dpnameLG').then((dpnameLG) => {
+      this.setState({ dpnameLG: dpnameLG !== null, dpnameLG: dpnameLG })
+      console.log("will", this.state.dpnameLG);
+    })
+  }
+
+  
+  _logout= () => {
+    console.log ("Button logout");
+    // AsyncStorage.removeItem('dpnameLG', (err, result) => {
+    //   this.setState({dpnameLG: ""})  
+    // }); 
+  }
+
+  
   render() {
     const { navigation } = this.props;
     return (
@@ -14,7 +40,7 @@ export default class DrawerContainer extends React.Component {
               style={styles.userLogo}
               source={require('../../../assets/icons/userlg.jpg')}
             />
-            <Text style={styles.text}>KIỀU THU TRANG</Text>
+            <Text style={styles.text}>{this.state.dpnameLG}</Text>
           </ImageBackground>
         </View>
         <View style={styles.container}>
@@ -47,7 +73,7 @@ export default class DrawerContainer extends React.Component {
             title="SỨC KHỎE"
             source={require('../../../assets/icons/heart.png')}
             onPress={() => {
-              navigation.navigate('heat');
+              navigation.navigate('health');
               navigation.closeDrawer();
             }}
           />
@@ -63,6 +89,7 @@ export default class DrawerContainer extends React.Component {
             title="ĐĂNG XUẤT"
             source={require('../../../assets/icons/logout.png')}
             onPress={() => {
+              this._logout();
               navigation.navigate('StartScreen');
               navigation.closeDrawer();
             }}
