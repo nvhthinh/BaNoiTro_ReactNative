@@ -30,7 +30,7 @@ export default class Peichart extends React.Component {
         const idLG = await AsyncStorage.getItem('idLG');
         console.log("___________________________________goilai")
         // console.log("./Start ...............................", idLG)
-        await fetch('http://192.168.1.9:3000/api/spendingSummary',{
+        await fetch('http://192.168.1.8:3000/api/spendingSummary',{
           method: 'POST',
           headers: {
             Accept: 'application/json',

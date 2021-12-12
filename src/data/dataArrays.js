@@ -18,55 +18,6 @@ export const summarySpending = [
       legendFontColor: '#7F7F7F',
       legendFontSize: 15,
   },
-  // {
-  //     name: 'Đầu tư',
-  //     population: 11920000,
-  //     color: '#0099c6',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: 'Lương',
-  //     population: 11920000,
-  //     color: '#dd4477',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: 'Thu nhập khác',
-  //     population: 11920000,
-  //     color: '#6a0',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: '1',
-  //     population: 11920000,
-  //     color: '#b82e2e',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: '2',
-  //     population: 11920000,
-  //     color: '#316395',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: '3',
-  //     population: 11920000,
-  //     color: '#994499',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
-  // {
-  //     name: '4',
-  //     population: 11920000,
-  //     color: '#2a9',
-  //     legendFontColor: '#7F7F7F',
-  //     legendFontSize: 15,
-  // },
 ];
 
 export const spending = [
@@ -148,6 +99,77 @@ export const categories = [
     id: 0,
     name: 'Món ăn dặm cho bé',
     photo_url: 'https://amp.businessinsider.com/images/5c084bf7bde70f4ea53f0436-750-563.jpg'
+  },
+];
+
+export const health = [
+  {
+    id: 3,
+    name: 'Tốp 10 thực phẩm tốt cho sức khỏe',
+    des: 'Chanh. Một trái chanh có hơn 100% hàm lượng vitamin C mà chúng ta nạp vào cơ thể hằng ngày, nó giúp tăng lượng cholesterol tốt và chắc xương. ...',
+    photo_url:
+    'https://photo-cms-plo.zadn.vn/w800/Uploaded/2021/bpcpcwvo/2015_12_24/1_73_fvrn.jpg'
+  },
+  {
+    id: 1,
+    name: 'Những biện pháp giúp trị đau họng tại nhà',
+    des: 'Phần lớn trường hợp, bạn có thể tự trị đau họng tại nhà bằng những biện pháp khắc phục đơn giản để chấm dứt tình trạng khó chịu trong cổ họng mình. ...',
+    photo_url: 'https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img,w_512/https://hapacol.vn/wp-content/uploads/2019/10/phuong-phap-tri-dau-hong.png'
+  },
+  {
+    id: 2,
+    name: '46 cách chữa bệnh bằng mẹo dân gian không cần thuốc',
+    des: '46 cách chữa bệnh bằng mẹo dân gian không cần thuốc cực kỳ hiệu quả. Dưới đây là chia sẻ. ...',
+    photo_url:
+      'https://truongcaodangduocsaigon.vn/Uploads/images/1_34061.jpg'
+  },
+  {
+    id: 4,
+    name: '15 đồ uống giải nhiệt mùa hè tốt cho sức khỏe tự làm cực dễ',
+    des: '1. Nước nha đam đường phèn giải nhiệt mùa hè. ...',
+    photo_url:'https://uploads-ssl.webflow.com/5cee2f3dd405b02f6b69356c/5ee0571607f4bfff6e18dc77_nha-dam-duong-phen.jpg'
+  },
+  {
+    id: 0,
+    name: '12 mẹo đơn giản cực tốt cho sức khỏe',
+    des: 'Uống cà phê để giấc ngủ trưa ngon. ...',
+    photo_url: 'https://photo-cms-plo.zadn.vn/w800/Uploaded/2021/bpcpcwvo/2015_08_11/coffee-is-great-health-400x400_skzd.jpg'
+  },
+];
+
+
+export const tips = [
+  {
+    id: 3,
+    name: '#20 Mẹo Vặt Hữu Ích Cuộc Sống Đơn Giản Hơn',
+    des: 'Khám phá 20 mẹo vặt không ngờ trong cuộc sống sẽ giúp ích cho bạn trong nhiều tình huống. ...',
+    photo_url:
+    'https://res.cloudinary.com/obsessedly/image/upload/ar_16:9,c_fill,w_728,h_410/11_Cup_of_Tea_mdbbpz.webp'
+  },
+  {
+    id: 1,
+    name: 'Công dụng của đá lạnh đối với nhà bếp',
+    des: 'Đá lạnh là thành phần không thể thiếu trong những ly nước uống giải nhiệt ngày nóng bức.. ...',
+    photo_url: 'https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img,w_512/https://hapacol.vn/wp-content/uploads/2019/10/phuong-phap-tri-dau-hong.png'
+  },
+  {
+    id: 2,
+    name: 'Cách làm khoai tây chiên thơm ngon nhất',
+    des: 'Cách làm khoai tây chiên thơm ngon nhất, miếng khoai vàng ruộm, giòn lâu. ...',
+    photo_url:
+      'https://cdn.tgdd.vn/Files/2017/11/27/1045160/bi-quyet-chien-khoai-tay-thom-ngon-gion-rum-an-hoai-khong-chan-ava-760x367.jpg'
+  },
+  {
+    id: 4,
+    name: 'Top 5 cách trị mụn tại nhà cực hiệu quả trong thời gian ngắn',
+    des: 'Nhiều người thường có thói quen dùng tay nặn mụn với mong muốn “tiêu diệt” chúng. Tuy nhiên, trong đa số trường hợp,. ...',
+    photo_url:'https://cdn.hellobacsi.com/wp-content/uploads/2017/10/cach-tri-mun-tai-nha-1.jpg'
+  },
+  {
+    id: 0,
+    name: '9 bước khiến bạn nhớ nhanh hơn',
+    des: 'Người ta thường nói đùa về việc những gì bạn thực sự học được ở trường chỉ là khả năng ghi. ...',
+    photo_url: 'http://sieutrinao.com/wp-content/uploads/9-buoc-giup-ban-ghi-nho-nhanh-hon.jpg'
   },
 ];
 
@@ -403,8 +425,8 @@ export const recipes = [
   {
     recipeId: 0,
     categoryId: 0,
-    title: 'Chè thái',
-    photo_url: 'https://namelymarly.com/wp-content/uploads/2018/04/20180415_Beet_Lasagna_10.jpg',
+    title: 'Khoai tây chiên',
+    photo_url: 'https://advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width600/img/news_impact/photo/burger-fijpg-57e7e5907630c2ad.jpg',
     photosArray: [
       "https://namelymarly.com/wp-content/uploads/2018/04/20180415_Beet_Lasagna_10.jpg",
       'https://advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width600/img/news_impact/photo/burger-fijpg-57e7e5907630c2ad.jpg',
@@ -478,27 +500,27 @@ export const recipes = [
 export const quickSearch = [
   {
     quickSearchId: 0,
-    name: 'a'
+    name: 'Cách làm bánh ngon hơn'
   },
   {
     quickSearchId: 0,
-    name: 'Oil'
+    name: 'Mẹo vặt gia đình'
   },
   {
     quickSearchId: 0,
-    name: 'Toi la thinh'
+    name: 'Mẹo chửa đau họng'
   },
   {
     quickSearchId: 0,
-    name: 'xin chao'
+    name: 'Nước uống nóng'
   },
   {
     quickSearchId: 0,
-    name: 'day la gi'
+    name: 'Sức khỏe'
   },
   {
     quickSearchId: 0,
-    name: 'la tim kiem nhanh'
+    name: 'Mẹo vặt hay'
   },
 ]
 

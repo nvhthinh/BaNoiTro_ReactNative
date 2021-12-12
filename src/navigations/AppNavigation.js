@@ -9,8 +9,10 @@ import HomeScreen from '../screens/Home/HomeScreen';
 import SpendingBookScreen from '../screens/SpendingBook/SpendingBookScreen';
 import CategoriesScreen from '../screens/Categories/CategoriesScreen';
 import HealthScreen from '../screens/health/HealthScreen';
+import TipsScreen from '../screens/tips/TipsScreen';
 import RecipeScreen from '../screens/Recipe/RecipeScreen';
 import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
+import ReadPostScreen from '../screens/ReadPost/ReadPostScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
@@ -85,14 +87,16 @@ const MainNavigator = createStackNavigator(
     Spending: SpendingBookScreen,
     Categories: CategoriesScreen,
     health: HealthScreen,
+    tips: TipsScreen,
     Recipe: RecipeScreen,
     RecipesList: RecipesListScreen,
+    ReadPost: ReadPostScreen,
     Ingredient: IngredientScreen,
     Search: SearchScreen,
     IngredientsDetails: IngredientsDetailsScreen
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'StartScreen',
     // headerMode: 'float',
     defaulfNavigationOptions: ({ navigation }) => ({
       headerTitleStyle: {

@@ -15,8 +15,8 @@ import AppContainer from './../../navigations/AppNavigation';
 import { State } from 'react-native-gesture-handler'
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: 'acc1@g.com', error: '' })
-  const [password, setPassword] = useState({ value: '12345', error: '' })
+  const [email, setEmail] = useState({ value: '', error: '' })
+  const [password, setPassword] = useState({ value: '', error: '' })
   const [messageErrorLogin, setMessageErrorLogin] = useState(0)
   
   const onLoginPressed = () => {
@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
   const signin = async() => {
     try {
       // IP address my computer
-      await fetch('http://192.168.1.9:3000/api/login',{
+      await fetch('http://192.168.1.8:3000/api/login',{
         method: 'POST',
         headers: {
           Accept: 'application/json',

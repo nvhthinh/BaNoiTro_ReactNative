@@ -25,18 +25,19 @@ export default class SpendingSummary extends React.Component {
       price: "0,000",
       checked: "first",
       refreshing: true,
-      type: "WEEK"
+      // type: "WEEK"
+      type: "MONTH"
     };
     
     componentDidMount() {
-      this.getDate();
+      // this.getDate();
       this._renderDataSpending();
     }
     
     _renderDataSpending = async() => {
       try {
         const idLG = await AsyncStorage.getItem('idLG');
-        await fetch('http://192.168.1.9:3000/api/spendingSummary',{
+        await fetch('http://192.168.1.8:3000/api/spendingSummary',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -54,7 +55,8 @@ export default class SpendingSummary extends React.Component {
             this.setState({spendingChartSV: spending, refreshing: false})
             this._handleSumSpending(spending);
           } else{
-            console.log ("log info get all spending error  ", res)
+            this.setState({spendingChartSV: [], spendingSumSV: [], refreshing: false})
+            console.log ("log info get all spending summary error  ", res)
           }
         })
         .done();
@@ -66,7 +68,7 @@ export default class SpendingSummary extends React.Component {
 
     //tính tổng spending
     _handleSumSpending = (array) => {
-      let sI =0 ,sO =0, sS=0, pI=0;
+      let sI =0 ,sO =0, sS=0, sR=0, pI=0;
       array.forEach(e => {
         if(!e.pay) {
           sO+= Number((e.price_category).replace(/\./g,'').slice(0, -3));
@@ -75,8 +77,8 @@ export default class SpendingSummary extends React.Component {
           pI+= e.percent;
         }
       });
-      sS = sO + sI;
-
+      sS = sI - sO;
+      sR = sI - sO;
       pI = Math.round(pI);
       let pO = 100 - pI;
 
@@ -84,6 +86,7 @@ export default class SpendingSummary extends React.Component {
       objSumSV.sO = Number(sO).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&.');
       objSumSV.sI = Number(sI).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&.');
       objSumSV.sS = Number(sS).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&.');
+      objSumSV.sR = Number(sR).toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&.');
 
       objSumSV.pO = pO;
       objSumSV.pI = pI;
@@ -372,12 +375,330 @@ export default class SpendingSummary extends React.Component {
               <Text style = {{justifyContent: "center", paddingTop: 8, color: this.state.checked === 'second' ? 'green': '#000', fontWeight: "bold"}}>Nhập khoản thu</Text>
             </View>  
           </View>
-
-{/* render from */}
           {this._renderForm(this.state.checked)}
-
         </View>
     );
+    
+    _renderTips = (item, sum) => {
+      let componentTips  = [];
+      if(sum.pI>=50) {
+        if(sum.pI>65) {
+          componentTips.push(
+            <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                <View
+                  style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                />
+                <View style = {{flexDirection: "column"}}>
+                  <Text>Chào bạn! Thống kê thu nhập trong đợt tốt, đạt {sum.sS}VND. Tổng lợi nhuận cao hơn 15%.</Text>
+                  <Text>Tổng lời {parseInt(sum.pI)-parseInt(sum.pO)}%. với số tiền lợi nhuận {sum.sR}VND</Text>
+                  <Text>Chúc mừng bạn, Tăng trưởng hơn nữa bằng một số gợi ý của chúng tôi về bạn.</Text>
+                </View>
+            </View>
+          )
+        } else {
+          componentTips.push(
+            <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+              <View
+                style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+              />
+              <View style = {{flexDirection: "column"}}>
+                <Text>Chào bạn! Thống kê thu nhập đạt mức trung bình, đạt {sum.sS}VND. Lợi nhuận thấp hơn 15%</Text>
+                <Text>Tổng lời {parseInt(sum.pI)-parseInt(sum.pO)}%. với số tiền lợi nhuận {sum.sR}VND</Text>
+                <Text>Bạn cần cố gắng hơn, Tăng trưởng hơn bằng một số gợi ý của chúng tôi về bạn.</Text>
+              </View>
+          </View>
+          )
+        }
+      } else {
+        if(sum.pI>45) {
+          componentTips.push(
+            <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                <View
+                  style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                />
+                <View style = {{flexDirection: "column"}}>
+                  <Text>Chào bạn! Thống kê thu nhập trong đợt chưa tốt.</Text>
+                  <Text>Tổng thua lỗ {parseInt(sum.pI)-parseInt(sum.pO)}%. với số tiền {sum.sR}VND</Text>
+                  <Text>Hãy cố lên, Lấy lại đà tăng trưởng bằng một số gợi ý của chúng tôi về bạn.</Text>
+                </View>
+            </View>
+          )
+        } else {
+          componentTips.push(
+            <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                <View
+                  style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                />
+                <View style = {{flexDirection: "column"}}>
+                  <Text>Chào bạn! Thống kê thu nhập trong đợt rất tệ.</Text>
+                  <Text>Tổng thua lỗ {parseInt(sum.pI)-parseInt(sum.pO)}%. với số tiền {sum.sR}VND</Text>
+                  <Text>Hãy cố lên, Lấy lại đà tăng trưởng bằng một số gợi ý của chúng tôi về bạn.</Text>
+                </View>
+            </View>
+          )
+        }
+      }
+      // console.log(item)
+      item.forEach(e => {
+        if(sum.pI>=50) {
+          if(e.pay) {
+            switch(e.name) {
+              case 'Khoản thu khác':
+              if(e.percentInt>25){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Bạn có 1 công việc tay trái tốt, Hãy cố gắng phát huy nhé! {e.price_category}VND chiếm {e.percentInt}% khoản thu của bạn.</Text>
+                </View>
+                )
+              }
+              case 'Nhận lương':
+              if(e.percentInt<=60){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Khoản thu nhập chính có vẻ không được tốt. Cố lên nào!</Text>
+                </View>
+                )
+              }
+        
+              case 'Tiền thưởng':
+              if(e.percentInt>10){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Trong đợt này cố gắng xuất sắc công việc của mình và được khoản thưởng lớn. Hảy tự thưởng cho bản thân gì đi nào!</Text>
+                </View>
+                )
+              }
+            }
+
+          } else {
+            switch(e.name) {
+              case 'Khoản chi khác':
+              if(e.percentInt<5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Khoản chi không xác định vược quá 5% bạn nên chú ý để quản lý thu nhập tốt hơn.</Text>
+                </View>
+                )
+              }
+              // continue;
+              case 'Sinh hoạt':
+              if(e.percentInt>20 || e.percentInt<10){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>20?"Với kinh tế hiện tại của bạn. Chúng tôi khuyên bạn nên giảm chi tiêu đến mức có thể từ "+e.percentInt+"% xuống 20% của tổng chi.": ""}
+                    {e.percentInt<10?"Cùng với sự phát triển kinh tế bạn cũng nên chú trọng hơn đến việc chăm sóc gia đình nhé! "+e.percentInt+"% là mức sinh hoạt trong tổng số.": ""}
+                    </Text>
+                </View>
+                )
+              }
+        
+              case 'Học tập':
+              if(e.percentInt>20 || e.percentInt<10){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>20?"Học tập là đầu tư cho tương lai, nhưng hảy đầu tư hợp lý vào đúng mục đích nhé!":""}
+                    {e.percentInt<10?"Học tập là đầu tư cho tương lai, dành một chút thời gian để quan tâm đến việc đầu tư cho tương lai các con nữa nhé!": ""}
+                    </Text>
+                </View>
+                )
+              }
+        
+              case 'Y tế':
+              if(e.percentInt>=20 || e.percentInt<=10){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>=20?"Có vẻ sức khỏe gia đình bạn không được tốt hảy chăm sóc bằng những món ăn phù hợp để cải thiện sức khỏe gia đình bạn nào":""}
+                    {e.percentInt<=10?"Sức khỏe là quan trọng nhất. Hảy chú ý chăm sóc và nên khám sức khỏe cho gia đình nào.": ""}
+                    </Text>
+                </View>
+                )
+              } else {
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Ngoài cồng việc bạn cũng nên chú trong đến sức khỏe. Nhớ tham khảo các công thức nấu ăn tốt cho sức khỏe của chúng tôi nào</Text>
+                </View>
+                )
+              }
+              
+              case 'Giải trí':
+              if(e.percentInt>20 || e.percentInt<5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>=20?"Có vẻ gia đình đã trải qua 1 kì nghỉ vui vẻ và tốn kém. Hảy cùng chúng tôi phát triển kinh tế nhé!":""}
+                    {e.percentInt<=5?"Sau một khoản thời gian làm việc mệt mỏi, hảy cùng gia đình tổ chức 1 buổi thăm quan hay vui vẻ gải trí cùng nhau nào.": ""}
+                    </Text>
+                </View>
+                )
+              }
+
+              case 'Mua sắm':
+              if(e.percentInt>10){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Nên mua những gì cần thiết thôi nào.</Text>
+                </View>
+                )
+              }
+            }
+          }
+        } else {
+          ///<50%
+          if(e.pay) {
+            switch(e.name) {
+              case 'Khoản thu khác':
+              if(e.percentInt>30){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Bạn có 1 công việc tay trái tốt, Hảy cố gắng phát huy nhé! {e.price_category}VND chiếm {e.percentInt}% khoản thu của bạn.</Text>
+                </View>
+                )
+              }
+              case 'Nhận lương':
+              if(e.percentInt<=70){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Khoản thu nhập chính có vẻ không được tốt. Cố lên nào!</Text>
+                </View>
+                )
+              }
+        
+              case 'Tiền thưởng':
+              if(e.percentInt>20){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Trong đợt này cố gắng xuất sắc công việc của mình và được khoản thưởng lớn. Hảy tự thưởng cho bản thân gì đi nào!</Text>
+                </View>
+                )
+              }
+            }
+
+          } else {
+            switch(e.name) {
+              case 'Khoản chi khác':
+              if(e.percentInt<2){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Khoản chi không xác định vược quá 5% bạn nên chú ý để quản lý thu nhập tốt hơn.</Text>
+                </View>
+                )
+              }
+              // continue;
+              case 'Sinh hoạt':
+              if(e.percentInt>10 || e.percentInt<5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>10?"Với kinh tế hiện tại của bạn. Chúng tôi khuyên bạn nên giảm chi tiêu đến mức có thể từ "+e.percentInt+"% xuống 20% của tổng chi.": ""}
+                    {e.percentInt<5?"Cùng với sự phát triển kinh tế bạn cũng nên chú trọng hơn đến việc chăm sóc gia đình nhé! "+e.percentInt+"% là mức sinh hoạt trong tổng số.": ""}
+                    </Text>
+                </View>
+                )
+              }
+        
+              case 'Học tập':
+              if(e.percentInt>10 || e.percentInt<5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>10?"Học tập là đầu tư cho tương lai, nhưng hảy đầu tư hợp lý vào đúng mục đích nhé!":""}
+                    {e.percentInt<5?"Học tập là đầu tư cho tương lai, dành một chút thời gian để quan tâm đến việc đầu tư cho tương lai các con nữa nhé!": ""}
+                    </Text>
+                </View>
+                )
+              }
+        
+              case 'Y tế':
+              if(e.percentInt>=10 || e.percentInt<=5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>{e.percentInt>=10?"Có khỏe sức khỏe gia đình bạn không được tốt hảy chăm sóc bằng những món ăn phù hợp để cải thiện sức khỏe gia đình bạn nào":""}
+                    {e.percentInt<=5?"Sức khỏe là quan trọng nhất. Hảy chú ý chăm sóc và nên khám sức khỏe cho gia đình nào.": ""}
+                    </Text>
+                </View>
+                )
+              }
+              
+              case 'Giải trí':
+              if(e.percentInt>5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Trong thời gian khó khăn này. Mục giải trí nên hạn chế nhé</Text>
+                </View>
+                )
+              }
+
+              case 'Mua sắm':
+              if(e.percentInt>5){
+                componentTips.push(
+                  <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10, paddingRight: 6}}>
+                    <View
+                      style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
+                    />
+                    <Text>Nên mua những gì cần thiết thôi nào.</Text>
+                </View>
+                )
+              }
+            }
+          }
+        }
+      });
+
+      return (componentTips);
+    }
+
+
     renderCategory = ({ item }) => (
       <TouchableHighlight underlayColor='rgba(73,182,77,0.9)'>
         <View style={stylesS.spendingItemContainer}>
@@ -505,31 +826,8 @@ export default class SpendingSummary extends React.Component {
                     />
                       <Text style= {{fontSize: 20, borderBottomColor: "#e7b62c", borderBottomWidth: 3}}>Lời khuyên cho bạn</Text>
                   </View>
-                  <View>
-                    <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10}}>
-                        <View
-                          style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
-                        />
-                        <Text>Lời khuyên của chúng tôi về số liệu chi tiêu của bạn/Lời khuyên của chúng tôi về số liệu chi tiêu của bạn</Text>
-                    </View>
-                    <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10}}>
-                        <View
-                          style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
-                        />
-                        <Text>Lời khuyên của chúng tôi về số liệu chi tiêu của bạn/Lời khuyên của chúng tôi về số liệu chi tiêu của bạn</Text>
-                    </View>
-                    <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10}}>
-                        <View
-                          style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
-                        />
-                        <Text>Lời khuyên của chúng tôi về số liệu chi tiêu của bạn</Text>
-                    </View>
-                    <View style = {{flexDirection: "row", flex: 1 ,  paddingBottom: 10}}>
-                        <View
-                          style = {{backgroundColor: "green", height: 10, width: 10, borderRadius: 5, margin: 5}}
-                        />
-                        <Text>Lời khuyên của chúng tôi về số liệu chi tiêu của bạn/Lời khuyên của chúng tôi về số liệu chi tiêu của bạn</Text>
-                    </View>
+                  <View style={{display: this.state.spendingSumSV.sS == null?"none":"flex"}}>
+                    {this._renderTips(this.state.spendingChartSV, this.state.spendingSumSV)}
                   </View>
               </View>
               

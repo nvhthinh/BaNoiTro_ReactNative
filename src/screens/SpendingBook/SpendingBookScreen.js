@@ -6,15 +6,15 @@ import SpendingSummary from './SpendingSummary';
 
 const FirstRoute = () => (
     <ScrollView>
-        {/* <SpendingHistory/> */}
-        <SpendingSummary/>
+        <SpendingHistory/>
+        {/* <SpendingSummary/> */}
     </ScrollView>
 );
 
 const SecondRoute = () => (
     <ScrollView>
-        {/* <SpendingSummary/> */}
-        <SpendingHistory/>
+        <SpendingSummary/>
+        {/* <SpendingHistory/> */}
     </ScrollView>
 );
 // navigationOptions = {

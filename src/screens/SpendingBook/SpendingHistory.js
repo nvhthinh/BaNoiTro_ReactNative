@@ -10,7 +10,7 @@ import { RadioButton } from 'react-native-paper';
 export default class SpendingHistory extends React.Component {
     state = {
       // visibleModal: 1,
-      visibleModal: 0,
+      visibleModal: null,
       choosenIndex: 0,
       datePickerVisible: false,
       date: "",
@@ -22,10 +22,68 @@ export default class SpendingHistory extends React.Component {
       refreshing: true,
       priceInt: 0,
       mess: "",
+      count: 0,
+      
+      kSearch:"",
+      kDate: 1,
+      kCategoryCount: 10,
+      kCategory:[
+        {
+          id: 0,
+          status: true,
+          name: 'Khoản thu khác',
+        },
+        {
+          id: 1,
+          status: true,
+          name: 'Nhận lương',
+        },
+        {
+          id: 2,
+          status: true,
+          name: 'Tiền thưởng',
+        },
+        {
+          id: 3,
+          status: true,
+          name: 'Lãi ngân hàng',
+        },
+        {
+          id: 4,
+          status: true,
+          name: 'Khoản chi khác',
+        },
+        {
+          id: 5,
+          status: true,
+          name: 'Sinh hoạt',
+        },
+        {
+          id: 6,
+          status: true,
+          name: 'Học tập',
+        },
+        {
+          id: 7,
+          status: true,
+          name: 'Y tế',
+        },
+        {
+          id: 8,
+          status: true,
+          name: 'Giải trí',
+        },
+        {
+          id: 9,
+          status: true,
+          name: 'Mua sắm',
+        },
+      ]
     };
 
     componentDidMount() {
-      this.getDate();
+      // this.getDate();
+      // console.log(this.state.kCategory[3].name)
 
       AsyncStorage.getItem('idLG').then((idLG) => {
         this.setState({ idLG: idLG !== null, idLG: idLG })
@@ -38,7 +96,7 @@ export default class SpendingHistory extends React.Component {
       const objSpending = this.state.ItemSP;
       objSpending[key] = value;
       this.setState({ItemSP: objSpending})
-      console.log("./objSpending update...............................", this.state.ItemSP)
+      // console.log("./objSpending update...............................", this.state.ItemSP)
     }
 
     //create data spending
@@ -68,7 +126,7 @@ export default class SpendingHistory extends React.Component {
     _addSpending = async() => {
       try {
         const data = await this.state.ItemSP;
-        await fetch('http://192.168.1.9:3000/api/addSpending',{
+        await fetch('http://192.168.1.8:3000/api/addSpending',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -98,7 +156,7 @@ export default class SpendingHistory extends React.Component {
       try {
         const data = await this.state.ItemSP;
         console.log("./LG...............................", data.id + "/"+ data.name)
-        await fetch('http://192.168.1.9:3000/api/updateSpending',{
+        await fetch('http://192.168.1.8:3000/api/updateSpending',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -149,7 +207,7 @@ export default class SpendingHistory extends React.Component {
     _delSpending = async() => {
       try {
         const id = await this.state.ItemSP.id;
-        await fetch('http://192.168.1.9:3000/api/delSpending',{
+        await fetch('http://192.168.1.8:3000/api/delSpending',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -173,15 +231,65 @@ export default class SpendingHistory extends React.Component {
       }
     }
 
-    //reder data
-    _refreshDataSpending = () => {
-      this._renderDataSpending();
+    _filterDataSpending = (id) => {
+      let objFilterC = this.state.kCategory;
+      let kCategoryCount = 0;
+      if(objFilterC[id].status) {
+        objFilterC[id].status = false;
+      } else {
+        objFilterC[id].status = true;
+      }
+      objFilterC.forEach(element => {
+        
+        if(element.status) {
+          kCategoryCount +=1;
+        }
+      });
+      this.setState({kCategoryCount: kCategoryCount})
+      this.setState({kCategory: objFilterC})
     }
+
+    _selectCAll = () => {
+      let objFilterC = this.state.kCategory;
+      if(this.state.kCategoryCount == 10) {
+        objFilterC.forEach(element => {
+          element.status = false;
+        });
+        this.setState({kCategoryCount: 0})
+      } else {
+        objFilterC.forEach(element => {
+          element.status = true;
+        });
+        this.setState({kCategoryCount: 10})
+      }
+      this.setState({kCategory: objFilterC})
+    }
+
+    _selectCAll2 = () => {
+      let objFilterC = this.state.kCategory;
+      objFilterC.forEach(element => {
+        element.status = true;
+      });
+      this.setState({kCategoryCount: 10})
+      this.setState({kCategory: objFilterC})
+    }
+
     _renderDataSpending = async() => {
       try {
+        const listC=[];
+        if(this.state.kCategoryCount!=10){
+          let objFilterC = this.state.kCategory;
+          objFilterC.forEach(element => {
+            if(element.status) {
+              listC.push(element.name);
+            }
+          });
+        }
+        console.log(listC);
+
         const idLG = await AsyncStorage.getItem('idLG');
         // console.log("./LG...............................", idLG)
-        await fetch('http://192.168.1.9:3000/api/getALLSpending',{
+        await fetch('http://192.168.1.8:3000/api/getALLSpending',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -189,12 +297,14 @@ export default class SpendingHistory extends React.Component {
           },
           body: JSON.stringify({
             'id': idLG,
+            'listC': listC
           })
         }).then((response)=>response.json())
         .then((res)=>{
           this.setState({refreshing: false});
           if(res.status===1){
             let data = res.body.data;
+            this.setState({count: res.count})
             this.setState({spendingSV: data})
           } else{
             console.log ("log info get all spending error  ", res)
@@ -205,6 +315,11 @@ export default class SpendingHistory extends React.Component {
         this.setState({refreshing: false});
         console.log("Login client fail ", error);
       }
+    }
+    
+    //reder data
+    _refreshDataSpending = () => {
+      this._renderDataSpending();
     }
 
     // refres data
@@ -494,6 +609,75 @@ export default class SpendingHistory extends React.Component {
         )
       }
     }
+    //modal category
+    _renderModalCategory = () => (
+      <View style={{backgroundColor: "#fff", borderRadius: 5, color: "#000"}}>
+        <View style= {{backgroundColor: "#fff3d0", borderTopStartRadius: 5, borderTopEndRadius: 5, padding: 10, flexDirection: "row"}}>
+          <Text style= {{fontSize: 20, textTransform: "capitalize", color: "#000", fontWeight: "600", flex: 1}}>Lọc theo danh mục</Text>
+        </View>
+
+        <View style = {{padding: 10, flexDirection: "column", fontSize: 16}}>
+          <View style= {{flexDirection: "row"}}>
+            <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => {this._selectCAll()}}
+            style= {{display: "flex", flexWrap: "wrap-reverse"}}
+            >
+              <View style = {{padding: 5, flexDirection: "row", borderRadius: 20, backgroundColor: this.state.kCategoryCount==10?"#e7b62c":"#cecece", marginLeft: 10, marginBottom: 10}}>
+                <View style = {{
+                      marginTop: 2
+                    }}>
+                </View>
+                <Text style = {{fontSize: 17, fontWeight: "bold"}}> {this.state.kCategoryCount==10?"Hủy chọn tất cả" : "Chọn "+this.state.kCategoryCount+", Chọn tất cả"} </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <FlatList
+            data= {this.state.kCategory}
+            scrollEnabled={false}
+            contentContainerStyle={{
+              alignSelf: 'flex-start',
+              flexDirection:'row', flexWrap:'wrap'
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+
+            renderItem={this._renderListCategory}
+            keyExtractor={item => `${item.id}`}
+            refreshing={this.state.refreshing}
+            onRefresh= {this._handleRefreshing}
+          />
+        </View>
+        <View style = {{padding: 10, flexDirection: "row", justifyContent: "flex-end"}}>
+          <View style= {{paddingLeft: 20}}>
+            <Button
+              onPress={() => {this._handleRefreshing()}}
+              title= " Lọc "
+              color="#e7b62c"
+            />
+          </View>
+          <View style= {{paddingLeft: 20}}>
+            <Button
+              onPress={() => {this.setState({visibleModal: null}) ; this._selectCAll2();}}
+              title= " Hủy lọc "
+              color="#dadde1"
+            />
+          </View>
+        </View>
+      </View>
+    );
+
+    _renderListCategory = ({ item }) => (
+      <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => {this._filterDataSpending(item.id)}}
+      style= {{display: "flex", flexWrap: "wrap-reverse"}}
+      >
+        <View style = {{padding: 5, flexDirection: "row", borderRadius: 20, backgroundColor: item.status==true?"#e7b62c":"#cecece", marginLeft: 10, marginBottom: 10}}>
+          <View style = {{
+                marginTop: 2
+              }}>
+          </View>
+          <Text style = {{fontSize: 17}}> {item.name}</Text>
+        </View>
+      </TouchableHighlight>
+    );
 
     //modal xóa
     _renderModaldel = () => (
@@ -507,21 +691,21 @@ export default class SpendingHistory extends React.Component {
         </View>
 
         <View style = {{padding: 10, flexDirection: "row", justifyContent: "flex-end"}}>
-              <View style= {{paddingLeft: 20, display: this.state.ItemSP.id != null? "flex": "none"}}>
-                <Button
-                  onPress={() => {this._delSpending()}}
-                  title= " Đồng ý xóa "
-                  color="#bd3737"
-                />
-              </View>
-              <View style= {{paddingLeft: 20}}>
-                <Button
-                  onPress={() => {this._handleRefreshing()}}
-                  title= " Cancel "
-                  color="#dadde1"
-                />
-              </View>
-            </View>
+          <View style= {{paddingLeft: 20, display: this.state.ItemSP.id != null? "flex": "none"}}>
+            <Button
+              onPress={() => {this._delSpending()}}
+              title= " Đồng ý xóa "
+              color="#bd3737"
+            />
+          </View>
+          <View style= {{paddingLeft: 20}}>
+            <Button
+              onPress={() => {this._handleRefreshing()}}
+              title= " Cancel "
+              color="#dadde1"
+            />
+          </View>
+        </View>
       </View>
     );
 
@@ -598,7 +782,7 @@ export default class SpendingHistory extends React.Component {
                                 <Text style = {{color: "#e7b62c", fontWeight: "bold"}}>1 tháng gần nhất</Text>
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='rgba(73,182,77,0.9)'>
+                        <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => {this.setState({visibleModal: 3})}}>
                             <View style= {{backgroundColor: "#fff", flex: 1, justifyContent: "center", paddingLeft: 10, paddingRight: 10, paddingBottom: 10, borderRadius: 20, borderColor: "#E7E9EB", borderWidth: 3}}>
                                 <Text style = {{color: "#e7b62c", fontWeight: "bold"}}><Image style={{height: 25, width: 25}} source={require("../../../assets/icons/pin-icon.png")} /> Danh mục</Text>
                             </View>
@@ -608,7 +792,7 @@ export default class SpendingHistory extends React.Component {
 
                 <View style={styles.spendingTotalContainer}>
                     <View style = {{flex: 1, flexDirection:'row',}}>
-                        <Text style={styles.spendingTotalTxt}>20 giao dịch</Text>
+                        <Text style={styles.spendingTotalTxt}>{this.state.count} giao dịch</Text>
                         <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => this._newSpending()}>
                             <View style= {{backgroundColor: "#e7b62c", flex: 1, justifyContent: "center", paddingLeft: 10, paddingRight: 10, paddingBottom: 15, paddingTop: 10, borderRadius: 10, borderColor: "#E7E9EB", borderWidth: 1}}>
                                 <Text style = {{color: "#fff", fontWeight: "bold"}}><Image style={{height: 20, width: 20}} source={require("../../../assets/icons/add-icon.png")} /> Thêm chi tiêu</Text>
@@ -633,6 +817,11 @@ export default class SpendingHistory extends React.Component {
             {/* Modal del*/}
             <Modal isVisible={this.state.visibleModal === 2}>
                 {this._renderModaldel()}
+            </Modal>
+
+            {/* Modal category*/}
+            <Modal isVisible={this.state.visibleModal === 3}>
+                {this._renderModalCategory()}
             </Modal>
 
           </View>

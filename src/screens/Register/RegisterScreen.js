@@ -35,7 +35,7 @@ export default function RegisterScreen({ navigation }) {
   const signUp = async() => {
     try {
       // IP address my computer
-      await fetch('http://192.168.1.9:3000/api/signUp',{
+      await fetch('http://192.168.1.8:3000/api/signUp',{
         method: 'POST',
         headers: {
           Accept: 'application/json',

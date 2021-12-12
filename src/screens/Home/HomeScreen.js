@@ -9,7 +9,7 @@ import {MenuImage, LogoImage, SearchImage} from '../../components/MenuImage/Menu
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import DrawerActions from 'react-navigation';
 import { getCategoryName } from '../../data/MockDataAPI';
-// import Button from '@material-ui/core/Button';
+
 export default class HomeScreen extends React.Component {
   
   componentDidMount() {
@@ -76,11 +76,9 @@ export default class HomeScreen extends React.Component {
     // <TouchableHighlight underlayColor='rgba(73,182,77,0.9)' onPress={() => this.onPressQuickSearch(item)}>
       <View style={styles.fastSearchItem}>
         <Button
-          // style={styles.fastSearchItemBt}
           onPress={() => this.onPressQuickSearch(item.name)}
           title= {item.name}
           color="#e7b62c"
-          accessibilityLabel="Learn more about this purple button"
         />
       </View>
     // </TouchableHighlight>
@@ -90,76 +88,18 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-{/*         
-        <View style={styles.fastSearch}>
-          <View style={styles.fastSearchItem}>
-            <Button
-              // style={styles.fastSearchItemBt}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title=". Learn Moresa das"
-              color="#19d29f"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          <View style={styles.fastSearchItem}>
-            <Button
-              style={styles.fastSearchItemBt}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title="Learn "
-              color="#e7b62c"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          <View style={styles.fastSearchItem}>
-            <Button
-              style={styles.fastSearchItemBt}
-              style={styles.fastSearchItem}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title=". e"
-              color="#19d29f"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          <View style={styles.fastSearchItem}>
-            <Button
-              style={styles.fastSearchItemBt}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title="ok"
-              color="#e7b62c"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          <View style={styles.fastSearchItem}>
-            <Button
-              style={styles.fastSearchItemBt}
-              style={styles.fastSearchItem}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title=". Learn More"
-              color="#19d29f"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          <View style={styles.fastSearchItem}>
-            <Button
-              style={styles.fastSearchItemBt}
-              onPress={() => Alert.alert('Simple Button pressed')}
-              title="12432543635"
-              color="#e7b62c"
-              accessibilityLabel="Learn more about this purple button"
-            />
-          </View>
-          
-        </View>
-         */}
-        
         <View style={styles.fastSearch}>
           <FlatList
-            horizontal
+            scrollEnabled={false}
+            contentContainerStyle={{
+              alignSelf: 'flex-start',
+              flexDirection:'row', flexWrap:'wrap'
+            }}
             showsVerticalScrollIndicator={false}
-            // numColumns={2}
+            showsHorizontalScrollIndicator={false}
+
             data={quickSearch}
             renderItem={this.renderQuickSearch}
-            keyExtractor={item => `${item.recipeId}`}
           />
         </View>
         <FlatList

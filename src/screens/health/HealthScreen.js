@@ -7,7 +7,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from './styles'
-import { categories } from '../../data/dataArrays';
+import { health } from '../../data/dataArrays';
 import { getNumberOfRecipes } from '../../data/MockDataAPI';
 
 export default class HealthsScreen extends React.Component {
@@ -22,7 +22,10 @@ export default class HealthsScreen extends React.Component {
   onPressCategory = item => {
     const title = item.name;
     const category = item;
-    this.props.navigation.navigate('RecipesList', { category, title });
+    this.props.navigation.navigate('ReadPost', { category, title });
+  };
+  onPressRecipe = item => {
+    this.props.navigation.navigate('Recipe', { item });
   };
 
   renderCategory = ({ item }) => (
@@ -30,7 +33,7 @@ export default class HealthsScreen extends React.Component {
       <View style={styles.healthItemContainer}>
         <Image style={styles.healthPhoto} source={{ uri: item.photo_url }} />
         <Text style={styles.healthName}>{item.name}</Text>
-        <Text style={styles.healthInfo}>Môt đoạn trích</Text>
+        <Text style={styles.healthInfo}>{item.des}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -39,7 +42,7 @@ export default class HealthsScreen extends React.Component {
     return (
       <View>
         <FlatList
-          data={categories}
+          data={health}
           renderItem={this.renderCategory}
           keyExtractor={item => `${item.id}`}
         />
