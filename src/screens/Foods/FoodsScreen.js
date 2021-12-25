@@ -9,6 +9,7 @@ import {
 import styles from './styles';
 import { foods } from '../../data/dataArrays';
 import { getNumberOfRecipes } from '../../data/MockDataAPI';
+import SearchFood from './SearchforFoods';
 
 export default class FoodsScreen extends React.Component {
   static navigationOptions = {
@@ -38,6 +39,7 @@ export default class FoodsScreen extends React.Component {
   render() {
     return (
       <View>
+        <SearchFood />
         <FlatList
           data={foods}
           renderItem={this.renderFoods}

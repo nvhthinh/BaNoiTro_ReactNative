@@ -5,11 +5,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Appbar, TextInput, Button } from 'react-native-paper';
+import { Appbar, TextInput, Button, Card, Title } from 'react-native-paper';
 
 const SearchFood = () => {
   const [text, onChangeText] = React.useState("");
-  const [result, onChangeRes] = React.useState("");
+  const [result, onChangeRes] = React.useState([]);
   const [display, onChangeDis] = React.useState("none");
 
   const handle = () => {
@@ -23,23 +23,44 @@ const SearchFood = () => {
     }).then(response => response.json())
     .then(data => {
         console.log(data);
-        onChangeRes(JSON.stringify(data));
+        var result = [];
+
+        for(var i in data)
+            result.push([i, data[i]]);
+        onChangeRes(result);
     })
     .catch(err => console.error(err));
   }
 
   return (
-
-        <View  style={{ padding: 10}}>
+    <SafeAreaView>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic">
+          {/* <Appbar.Header>
+          <Appbar.Content title="Search" />
+          </Appbar.Header> */}
+        <View  style={{ padding: 12 }}>
           <TextInput
           onChangeText={onChangeText}
+          mode='outlined'
           value={text}
           placeholder='Search here'
         />
-        <Button style={{ width: 120, margin: 12, alignSelf: "center" }} mode="contained" onPress={handle}>Search</Button>
+        <Button style={{ width: 120, margin: 12, alignSelf: "center" }} icon="magnify" mode="contained" onPress={handle}>Search</Button>
         <Text style={{ fontStyle: "italic", fontWeight: "bold", display: display }}>Search result for "{text}"</Text>
-        <Text>{result}</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          {result.map((e, url) => { return (
+          <Card key={e[0]} style={{ margin: 6, width: 180, alignContent: "center" }}>
+            <Card.Cover source={{ uri: e[1] }} />
+            <Card.Content>
+              <Title>{e[0]}</Title>
+            </Card.Content>
+            </Card>
+            ); })}
         </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

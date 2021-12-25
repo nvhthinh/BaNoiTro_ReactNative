@@ -25,6 +25,8 @@ import ResetPasswordScreen from '../screens/ResetPassword/ResetPasswordScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
 import Dashboard from '../screens/Dashboard';
 
+import SearchFood from '../screens/Foods/SearchforFoods';
+
 /* const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -93,7 +95,8 @@ const MainNavigator = createStackNavigator(
     ReadPost: ReadPostScreen,
     Ingredient: IngredientScreen,
     Search: SearchScreen,
-    IngredientsDetails: IngredientsDetailsScreen
+    IngredientsDetails: IngredientsDetailsScreen,
+    FoodSearch: SearchFood
   },
   {
     initialRouteName: 'StartScreen',
